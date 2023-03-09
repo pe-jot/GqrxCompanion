@@ -1,2 +1,7 @@
-# GqrxCompanion
-Quick &amp; simple Qt GUI based program to assist Gqrx SDR software via its TCP remote interface
+## GqrxCompanion
+
+A quick &amp; simple [Qt](https://www.qt.io/) GUI based program to assist [Gqrx](https://gqrx.dk/) SDR software via its TCP remote interface.
+
+The main purpose is to read the current signal level received from Gqrx and after a certain threshold is reached, a screenshot is captured. If the level falls below a certain threshold, a screenshot is captured again. It's intended use is to automatically monitor a frequency for interferences and log them. The software is intended to run on a [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/).
+
+**NOTE** for Linux users: The function used for taking the screenshot `QScreen::grabWindow()` doesn't work on Linux systems running Wayland window manager - a black image would be the result on those platforms. Luckily, [Raspberry Pi OS](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit) is using LXDE desktop based on X11.
