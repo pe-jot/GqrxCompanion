@@ -11,11 +11,21 @@
 #include <QWindow>
 
 
+const QString MainWindow::serverAddressKey = QString("ServerAddress");
+const QString MainWindow::serverPortKey = QString("ServerPort");
+const QString MainWindow::lowThresholdKey = QString("LowThreshold");
+const QString MainWindow::highThresholdKey = QString("HighThreshold");
+const QString MainWindow::savePathKey = QString("SavePath");
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , settings(new QSettings())
 {
     ui->setupUi(this);
+
+    restoreSettings();
 
     connect(ui->btnConnect, SIGNAL(clicked(bool)), this, SLOT(onBtnConnectClicked(bool)));
     connect(ui->btnSavePath, SIGNAL(clicked(bool)), this, SLOT(onBtnSavePathClicked(bool)));
@@ -52,6 +62,8 @@ MainWindow::~MainWindow()
     {
         socket.close();
     }
+
+    saveSettings();
 
     delete ui;
 }
@@ -208,4 +220,39 @@ void MainWindow::takeScreenshot(const bool& thresholdState, const QString& level
                 thresholdState ? "high" : "low");
 
     pixmap.save(filename);
+}
+
+
+void MainWindow::saveSettings()
+{
+    settings->setValue(serverAddressKey, ui->host->text());
+    settings->setValue(serverPortKey, ui->portNumber->value());
+    settings->setValue(lowThresholdKey, ui->thresholdLowLevel->value());
+    settings->setValue(highThresholdKey, ui->thresholdLevel->value());
+    settings->setValue(savePathKey, ui->screenshotPath->text());
+    settings->sync();
+}
+
+
+void MainWindow::restoreSettings()
+{
+    const auto defaultServerAddress = ui->host->text();
+    const auto storedServerAddress = settings->value(serverAddressKey, defaultServerAddress).toString();
+    ui->host->setText(storedServerAddress);
+
+    const auto defaultServerPort = ui->portNumber->value();
+    const auto storedServerPort = settings->value(serverPortKey, defaultServerPort).toInt();
+    ui->portNumber->setValue(storedServerPort);
+
+    const auto defaultThresholdLowLevel = ui->thresholdLowLevel->value();
+    const auto storedThresholdLowLevel = settings->value(lowThresholdKey, defaultThresholdLowLevel).toDouble();
+    ui->thresholdLowLevel->setValue(storedThresholdLowLevel);
+
+    const auto defaultThresholdLevel = ui->thresholdLevel->value();
+    const auto storedThresholdLevel = settings->value(highThresholdKey, defaultThresholdLevel).toDouble();
+    ui->thresholdLevel->setValue(storedThresholdLevel);
+
+    const auto defaultScreenshotPath = ui->screenshotPath->text();
+    const auto storedScreenshotPath = settings->value(savePathKey, defaultScreenshotPath).toString();
+    ui->screenshotPath->setText(storedScreenshotPath);
 }
