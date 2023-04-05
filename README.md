@@ -11,7 +11,8 @@ Luckily, [Raspberry Pi OS](https://www.raspberrypi.com/software/operating-system
 
 ### Imperfections
 * Absolutely minimalistic
-* The program does not save any settings
 * GUI design is not cross-platform capable (development was done on a Windows 10 machine)
 * Data is polled from Gqrx in a fixed interval and synchrously (synchronous TCP write + subsequent read)
 * One could also add those features to Gqrx directly, however setting up a build environment looks time consuming
+
+![Screenshot GqrxCompanion GUI on Windows 10](ScreenshotWindows.png)
