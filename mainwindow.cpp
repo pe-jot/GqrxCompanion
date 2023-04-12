@@ -1,5 +1,11 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+
+// QtQuick forms look quite different on Windows and on Linux (Ubuntu), so we hold separate form files
+#ifdef Q_OS_WINDOWS
+  #include "ui_mainwindow_win.h"
+#else
+  #include "ui_mainwindow_fusion.h"
+#endif
 
 #include <QDateTime>
 #include <QDir>
